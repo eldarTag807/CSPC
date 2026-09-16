@@ -1,8 +1,25 @@
-# CSPC Project Report
+# CSPC - Computer Science for Physics and Chemistry
 
-## PW1 --- Lab A
-- **Tests**: All 3 pytest unit tests passed successfully.
-- **Pure-Python Loop Time**: 2.1325 s
-- **NumPy Vectorized Time**: 0.0002 s
-- **Speed-up Factor**: NumPy is 11463.01x faster.
-- **Conclusion**: Simulating decay with NumPy vectors is faster with standard Python loops, showing why array operations are essential for heavy computations.
+My coursework repository. Each practical is under PW<n>/Lab <X>/.
+
+## Setup
+Create the environment for a given lab:
+```bash
+conda env create -f PW1/Lab A/environment.yml
+conda activate cspc
+---
+
+## PW1 - Lab A: Reproducible Foundations
+
+**What I built:**
+Simulated radioactive decay using pure Python loops and vectorized NumPy operations.
+
+**Speed comparison (loop vs NumPy):**
+- loop : 2.1325 s
+- numpy : 0.0002 s
+- speed-up: 11463.01 x faster
+
+**Tests:** all passing? yes
+
+**Conclusion:**
+Simulating decay with NumPy vectors is orders of magnitude faster than iterating with standard Python loops, showing why array operations are essential for heavy computations.
