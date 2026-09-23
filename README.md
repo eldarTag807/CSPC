@@ -6,9 +6,8 @@ My coursework repository. Each practical is under PW<n>/Lab <X>/.
 Create the environment for a given lab:
 ```bash
 conda env create -f PW1/Lab A/environment.yml
-conda activate cspc```
----
-
+conda activate cspc
+```
 ## PW1 - Lab A: Reproducible Foundations
 
 **What I built:**
