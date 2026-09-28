@@ -35,3 +35,11 @@ The observed points follow the same shape as the analytical curve, so the data m
 
 **Automation:**
 Made a Snakefile so the figure gets rebuilt automatically from the data with one command, instead of running plot.py by hand every time.
+
+## PW2 - Lab A: Motion from Tracking Data
+
+**Mean acceleration:** -8.58 m/s^2 (std 28.7). Expected about -9.81, the gap comes mostly from the edge points where np.gradient uses one-sided differences.
+
+**Why the acceleration is noisy:** a derivative compares neighbouring points, so the small measurement noise in the position gets amplified, and two derivatives in a row amplify it a lot. The position itself is smooth.
+
+**Integrating back:** integrating the noisy acceleration twice gave a position that differs from the original by at most 0.78 m, so integration averages the noise out.
