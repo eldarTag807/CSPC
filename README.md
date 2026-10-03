@@ -8,52 +8,68 @@ Create the environment for a given lab:
 conda env create -f PW1/Lab A/environment.yml
 conda activate cspc
 ```
-## PW1 - Lab A: Reproducible Foundations
+ ## PW1 - Lab A: Reproducible Foundations
 
-**What I built:**
-Simulated radioactive decay using pure Python loops and vectorized NumPy operations.
+### What I built
+I simulated radioactive decay in two ways: first using regular Python loops, and then using vectorized NumPy operations.
 
-**Speed comparison (loop vs NumPy):**
-- loop : 2.1325 s
-- numpy : 0.0002 s
-- speed-up: 11463.01 x faster
+### Speed comparison
+The difference in speed was pretty big:
+- Python loop: 2.1325 s
+- NumPy: 0.0002 s
+- Speed-up: about 11,463x faster with NumPy
 
-**Tests:** all passing? yes
+All the tests passed successfully.
 
-**Conclusion:**
-Simulating decay with NumPy vectors is orders of magnitude faster than iterating with standard Python loops, showing why array operations are essential for heavy computations.
-
-
+### Conclusion
+Using NumPy arrays made the simulation much faster than going through the values one by one with Python loops. This shows why vectorized operations are useful when working with large amounts of data or doing heavy calculations.
 
 ## PW1 - Lab B: Data, Plotting, and Automation
 
-**What I built:**
-Loaded the observed decay data from decay_observed.csv and plotted it next to the analytical curve N0*exp(-λt) to compare them side by side.
+### What I built
+I loaded the observed decay data from decay_observed.csv and plotted it together with the analytical decay curve, using N0*exp(-λt). This made it easier to compare the experimental data with the theoretical result.
 
-**Result:**
-The observed points follow the same shape as the analytical curve, so the data matches the decay law pretty well.
+### Result
+The observed points followed roughly the same shape as the analytical curve, so the data seems to agree pretty well with the expected radioactive decay law.
 
-**Automation:**
-Made a Snakefile so the figure gets rebuilt automatically from the data with one command, instead of running plot.py by hand every time.
+### Automation
+I also created a Snakefile so that the figure can be rebuilt automatically whenever needed. Instead of manually running plot.py every time, the whole process can now be done with one command.
 
 ## PW2 - Lab A: Motion from Tracking Data
 
-**Mean acceleration:** -8.58 m/s^2 (std 28.7). Expected about -9.81, the gap comes mostly from the edge points where np.gradient uses one-sided differences.
+The mean acceleration I calculated was -8.58 m/s^2, with a standard deviation of 28.7. The expected value is around -9.81 m/s^2. The difference is mostly caused by the points at the edges, where np.gradient has to use one-sided differences.
 
-**Why the acceleration is noisy:** a derivative compares neighbouring points, so the small measurement noise in the position gets amplified, and two derivatives in a row amplify it a lot. The position itself is smooth.
+The acceleration was also much noisier than the original position data. This makes sense because taking a derivative compares neighbouring points, so even small errors in the position measurements get amplified. Taking the derivative twice makes this effect even stronger. The position data itself looked much smoother.
 
-**Integrating back:** integrating the noisy acceleration twice gave a position that differs from the original by at most 0.78 m, so integration averages the noise out.
+I also integrated the noisy acceleration twice to get the position back. The resulting position differed from the original by a maximum of about 0.78 m. This showed that integration can smooth out some of the noise that appears when taking derivatives.
 
 ## PW2 - Lab B: Optimization in Chemistry
 
-**Part 2 - Three routes to a minimum:**
-On the easy function f(x)=(x-3)^2+1, all three methods agreed and landed on x≈3, no surprises there. The harder function g(x)=x^4-3x^2+x+5 was more interesting: starting from x0=0, Newton converged to x≈0.17, but that's actually a maximum, not a minimum — gradient descent and SLSQP found x≈-1.30 instead. Starting from x0=2, Newton and gradient descent both found x≈1.13, which is a real minimum this time. So Newton just finds where the slope is zero, it doesn't care if that's a hill or a valley, and where you start really changes what you get.
+### Part 2 - Three ways to find a minimum
+For the simple function f(x) = (x-3)^2 + 1, all three optimization methods gave basically the same answer, around x = 3, which was expected.
 
-**Part 3 - Reaction rate fitting:**
-Fit C(t)=C0*exp(-kt) to the noisy kinetics data and got k≈0.262, pretty close to the expected 0.25. The curve matches the data reasonably well, see kinetics.png.
+The harder function g(x) = x^4 - 3x^2 + x + 5 was more interesting. Starting from x0 = 0, Newton's method converged to about x = 0.17, but this point was actually a maximum rather than a minimum. Gradient descent and SLSQP instead found x ≈ -1.30, which is a minimum.
 
-**Part 4 - Chemical equilibrium:**
-For H2 + I2 <=> 2HI with K=15.6, solved for x both with Newton and with SLSQP, and they matched: x≈0.664 both times. That gives H2≈0.336 mol, I2≈0.336 mol, HI≈1.328 mol, close to what the lab expected.
+When I started from x0 = 2, both Newton's method and gradient descent found x ≈ 1.13, which is another actual minimum.
 
-**Part 5 (bonus) - Titration equivalence point:**
-Looked at where the pH curve's slope peaks and got V=50 mL, right where pH jumps from around 3 to 11 in the data.
+This showed me that Newton's method is really looking for a point where the slope is zero, so it doesn't automatically know whether that point is a minimum or a maximum. It also showed how much the starting point can affect the result.
+
+### Part 3 - Reaction rate fitting
+I fitted the model C(t) = C0*exp(-kt) to the noisy kinetics data. The fitted value was k ≈ 0.262, which is fairly close to the expected value of 0.25. The fitted curve also matched the data reasonably well, as shown in kinetics.png.
+
+### Part 4 - Chemical equilibrium
+For the reaction H2 + I2 <=> 2HI with K = 15.6, I solved for the equilibrium value of x using both Newton's method and SLSQP.
+
+Both methods gave almost exactly the same result, x ≈ 0.664. This corresponds to approximately:
+- H2 = 0.336 mol
+- I2 = 0.336 mol
+- HI = 1.328 mol
+
+These values were close to the expected lab results.
+
+### Part 5 - Titration equivalence point
+As a bonus, I looked for the point where the pH curve changes most rapidly by finding where its slope reaches a maximum.
+
+The equivalence point came out to about 50 mL, which makes sense because this is where the pH suddenly increases from roughly 3 to 11 in the data.
+
+Overall, these labs helped me see the difference between theoretical models and real/noisy data, and also showed how numerical methods like NumPy, optimization, differentiation, and integration can be used to solve practical problems.
