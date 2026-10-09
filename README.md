@@ -73,3 +73,51 @@ As a bonus, I looked for the point where the pH curve changes most rapidly by fi
 The equivalence point came out to about 50 mL, which makes sense because this is where the pH suddenly increases from roughly 3 to 11 in the data.
 
 Overall, these labs helped me see the difference between theoretical models and real/noisy data, and also showed how numerical methods like NumPy, optimization, differentiation, and integration can be used to solve practical problems.
+## PW3 - Data, Distributions, Testing, and Causation
+
+I used the Heart Disease dataset (Cleveland, UCI, 303 patients) and a synthetic chemicals_cancer.csv dataset (1000 patients).
+
+### Session 1: Distributions and normality
+
+- age: looks like a bell, most patients are 45-65.
+- chol: skewed to the right, a few very high values (up to 564).
+- trestbps: skewed to the right, with peaks at round numbers like 120 and 130.
+- thalach: skewed to the left, a few very low values.
+
+To check normality I looked at histograms, Q-Q plots and the Shapiro-Wilk test.
+- age: approximately normal (Shapiro p = 0.006, but skewness is small and the Q-Q plot is close to the line).
+- chol: not normal (p < 0.0001, skewness 1.13).
+- trestbps: not normal (p < 0.0001, skewness 0.70).
+- thalach: not normal (p = 0.0001, skewness -0.54).
+
+Since thalach is not normal, I used tests that don't need normal data.
+
+### Session 2: Heart rate and age
+
+I compared thalach in sick and healthy patients with the Mann-Whitney test.
+- disease: mean 139.3, SEM 1.9 (n = 139)
+- healthy: mean 158.4, SEM 1.5 (n = 164)
+- p = 1.9e-13
+
+The groups really are different: sick patients reach about 19 bpm lower max heart rate. The error bars on the plot don't overlap, so the plot agrees with the test.
+
+For age and thalach I used Spearman correlation: rho = -0.39. Older patients tend to have a lower max heart rate, but the link is only moderate.
+
+### Chemical mystery
+
+At first cadmium looked like the cause: correlation with malignancy 0.88, while benzene had only 0.38.
+
+Then I kept only patients with similar pollution (index 40-60, 199 patients) and checked again:
+
+| | all patients | pollution 40-60 |
+|---|---|---|
+| benzene | 0.38 | 0.70 |
+| cadmium | 0.88 | 0.32 |
+
+Benzene is the real cause. Cadmium only looked guilty because pollution increases both cadmium and malignancy, so they moved together. When pollution is about the same, the fake link mostly disappears.
+
+### Bonus: how balanced is a category
+
+I used entropy (max is 1 bit for two categories).
+- target: 54% / 46%, entropy 0.995. Almost balanced, hard to guess.
+- sex: 68% / 32%, entropy 0.905. More lopsided, easier to guess.
